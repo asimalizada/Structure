@@ -9,6 +9,7 @@ namespace Core.Constants
     public static class Messages
     {
         public static readonly string ValidatorTypeError = "Wrong type, this is not validator!";
+        public static readonly string LoggerTypeError = "Wrong type, this is not logger!";
 
         public static readonly string AuthorizationDenied = "Authorization denied!";
         public static readonly string TokenCreated = "Token created successfully!";
