@@ -1,7 +1,6 @@
 ﻿using Core.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.DataAccess.Concrete.EntityFramework.Contexts
 {
@@ -15,9 +14,19 @@ namespace Core.DataAccess.Concrete.EntityFramework.Contexts
 
         #endregion
 
+        public CoreContext()
+        {
+
+        }
+
+        public CoreContext(DbContextOptions<CoreContext> options) : base(options)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
+            optionsBuilder.UseSqlServer(@"server = (localdb)\MSSQLLocalDB; Database = GuideDb; Trusted_connection = true");
         }
     }
 }

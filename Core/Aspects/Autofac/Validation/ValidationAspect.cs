@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Core.Constants;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Interceptors;
@@ -16,7 +14,7 @@ namespace Core.Aspects.Autofac.Validation
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-                throw new Exception(Messages.ValidatorTypeError);
+                throw new System.Exception(Messages.ValidatorTypeError);
             }
 
             _validatorType = validatorType;

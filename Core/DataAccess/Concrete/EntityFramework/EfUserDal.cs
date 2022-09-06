@@ -19,6 +19,7 @@ namespace Core.DataAccess.Concrete.EntityFramework
                 return result.ToList();
 
             }
+            return new List<OperationClaim>();
         }
     }
 }

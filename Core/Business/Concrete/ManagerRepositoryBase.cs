@@ -29,7 +29,9 @@ namespace Core.Business.Concrete
             _dal = dal;
         }
 
-        protected ManagerRepositoryBase(TDal dal, string addMessage = Messages.Added, string updateMessage = Messages.Updated, string deleteMessage = Messages.Deleted, string deleteAllMessage = Messages.AllDeleted, string getMessage = Messages.DataFound, string getAllMessage = Messages.DataFound)
+        protected ManagerRepositoryBase(TDal dal, string addMessage = Messages.Added, string updateMessage = Messages.Updated, 
+            string deleteMessage = Messages.Deleted, string deleteAllMessage = Messages.AllDeleted, string getMessage = Messages.DataFound, 
+            string getAllMessage = Messages.DataFound)
             : this(dal)
         {
             _addMessage = addMessage;
