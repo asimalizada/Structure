@@ -7,8 +7,11 @@ namespace Core.WebAPI
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaseController<TEntity, TService> : ControllerBase
+    public class BaseController<TService, TEntity, TModelAdd, TModelUpdate, TModelDelete> : ControllerBase
         where TEntity : class, IEntity, new()
+        where TModelAdd : class, IAddModel, new()
+        where TModelUpdate : class, IUpdateModel, new()
+        where TModelDelete : class, IDeleteModel, new()
         where TService : class, IServiceRepository<TEntity>
     {
         private readonly TService _service;
