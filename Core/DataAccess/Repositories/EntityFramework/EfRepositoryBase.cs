@@ -31,6 +31,15 @@ namespace Core.DataAccess.Repositories.EntityFramework
             return await Context.Set<TEntity>().FirstOrDefaultAsync(predicate);
         }
 
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null)
+        {
+            var result = predicate == null
+                ? Context.Set<TEntity>().ToListAsync()
+                : Context.Set<TEntity>().Where(predicate).ToListAsync();
+
+            return await result;
+        }
+
         public async Task<IPaginate<TEntity>> GetListAsync(Expression<Func<TEntity, bool>>? predicate = null,
                                                            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                                                            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
@@ -82,19 +91,26 @@ namespace Core.DataAccess.Repositories.EntityFramework
             return entity;
         }
 
+        public async Task DeleteAllAsync()
+        {
+            Context.Set<TEntity>().Clear();
+            await Context.SaveChangesAsync();
+        }
 
         #endregion
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter)
+        #region Sync
+
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null)
         {
-            return filter == null
+            return predicate == null
                 ? Context.Set<TEntity>().ToList()
-                : Context.Set<TEntity>().Where(filter).ToList();
+                : Context.Set<TEntity>().Where(predicate).ToList();
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)
+        public TEntity Get(Expression<Func<TEntity, bool>> predicate)
         {
-            return Context.Set<TEntity>().FirstOrDefault(filter);
+            return Context.Set<TEntity>().FirstOrDefault(predicate);
         }
 
         public TEntity Add(TEntity entity)
@@ -162,6 +178,8 @@ namespace Core.DataAccess.Repositories.EntityFramework
             if (include != null) queryable = include(queryable);
             return queryable.ToPaginate(index, size);
         }
+
+        #endregion
 
     }
 }
