@@ -3,36 +3,42 @@ using Core.Aspects.Autofac.Validation;
 using Core.Business.Abstract;
 using Core.Constants;
 using Core.CrossCuttingConcerns.Validation;
-using Core.DataAccess.Abstract;
+using Core.DataAccess.Repositories;
 using Core.Entities.Abstract;
-using Core.Utilities.Results.Abstract;
-using Core.Utilities.Results.Concrete;
+using Core.Features.Results.Abstract;
+using Core.Features.Results.Concrete;
 using FluentValidation;
 
 namespace Core.Business.Concrete
 {
-    public class ManagerRepositoryBase<TEntity, TDal> : IServiceRepository<TEntity>
+    public class ManagerRepositoryBase<TEntity, TRepository> : IServiceRepository<TEntity>
         where TEntity : class, IEntity, new()
-        where TDal : class, IEntityRepository<TEntity>
+        where TRepository : class, IRepository<TEntity>
     {
-        private readonly TDal _dal;
+        private readonly TRepository _repository;
         private IValidator _validator;
-        private readonly string _addMessage = String.Empty;
-        private readonly string _updateMessage = String.Empty;
-        private readonly string _deleteMessage = String.Empty;
-        private readonly string _deleteAllMessage = String.Empty;
-        private readonly string _getMessage = String.Empty;
-        private readonly string _getAllMessage = String.Empty;
+        private readonly string _addMessage;
+        private readonly string _updateMessage;
+        private readonly string _deleteMessage;
+        private readonly string _deleteAllMessage;
+        private readonly string _getMessage;
+        private readonly string _getAllMessage;
 
-        private ManagerRepositoryBase(TDal dal)
+        private ManagerRepositoryBase(TRepository repository)
         {
-            _dal = dal;
+            _repository = repository;
+            _addMessage = String.Empty;
+            _updateMessage = String.Empty;
+            _deleteMessage = String.Empty;
+            _deleteAllMessage = String.Empty;
+            _getMessage = String.Empty;
+            _getAllMessage = String.Empty;
         }
 
-        protected ManagerRepositoryBase(TDal dal, string addMessage = Messages.Added, string updateMessage = Messages.Updated, 
+        protected ManagerRepositoryBase(TRepository repository, string addMessage = Messages.Added, string updateMessage = Messages.Updated, 
             string deleteMessage = Messages.Deleted, string deleteAllMessage = Messages.AllDeleted, string getMessage = Messages.DataFound, 
             string getAllMessage = Messages.DataFound)
-            : this(dal)
+            : this(repository)
         {
             _addMessage = addMessage;
             _updateMessage = updateMessage;
@@ -43,45 +49,42 @@ namespace Core.Business.Concrete
         }
 
         [CacheRemoveAspect("get")]
-        public virtual IResult Add(TEntity entity)
+        public virtual IDataResult<TEntity> Add(TEntity entity)
         {
             ValidationTool.Validate(_validator, entity);
-            _dal.Add(entity);
-            return new SuccessResult(_addMessage);
+            return new SuccessDataResult<TEntity>(_repository.Add(entity), _addMessage);
         }
 
         [CacheRemoveAspect("get")]
-        public virtual IResult Delete(TEntity entity)
+        public virtual IDataResult<TEntity> Delete(TEntity entity)
         {
-            _dal.Delete(entity);
-            return new SuccessResult(_deleteMessage);
+            return new SuccessDataResult<TEntity>(_repository.Delete(entity), _deleteMessage);
         }
 
         [CacheRemoveAspect("get")]
         public virtual IResult DeleteAll()
         {
-            _dal.DeleteAll();
+            _repository.DeleteAll();
             return new SuccessResult(_deleteAllMessage);
         }
 
         [CacheAspect]
         public virtual IDataResult<TEntity> Get(int id)
         {
-            return new SuccessDataResult<TEntity>(_dal.Get(e => e.Id == id), _getMessage);
+            return new SuccessDataResult<TEntity>(_repository.Get(e => e.Id == id), _getMessage);
         }
 
         [CacheAspect]
         public virtual IDataResult<List<TEntity>> GetAll()
         {
-            return new SuccessDataResult<List<TEntity>>(_dal.GetAll(), _getAllMessage);
+            return new SuccessDataResult<List<TEntity>>(_repository.GetAll(), _getAllMessage);
         }
 
         [CacheRemoveAspect("get")]
-        public virtual IResult Update(TEntity entity)
+        public virtual IDataResult<TEntity> Update(TEntity entity)
         {
             ValidationTool.Validate(_validator, entity);
-            _dal.Update(entity);
-            return new SuccessResult(_updateMessage);
+            return new SuccessDataResult<TEntity>(_repository.Update(entity), _updateMessage);
         }
 
         protected void SetValidator(IValidator validator)

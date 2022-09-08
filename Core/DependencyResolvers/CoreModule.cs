@@ -4,10 +4,9 @@ using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.DataAccess.Abstract;
 using Core.DataAccess.Concrete.EntityFramework;
-using Core.Utilities.IoC;
-using Core.Utilities.Security.Jwt;
+using Core.Features.IoC;
+using Core.Features.Security.Jwt;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
@@ -24,7 +23,7 @@ namespace Core.DependencyResolvers
             serviceCollection.AddSingleton<ITokenHelper, JwtHelper>();
             serviceCollection.AddSingleton<IAuthService, AuthManager>();
             serviceCollection.AddSingleton<IUserService, UserManager>();
-            serviceCollection.AddSingleton<IUserDal, EfUserDal>();
+            serviceCollection.AddSingleton<IUserRepository, EfUserRepository>();
         }
     }
 }

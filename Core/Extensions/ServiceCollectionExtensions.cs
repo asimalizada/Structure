@@ -1,5 +1,5 @@
 ﻿using Core.DependencyResolvers;
-using Core.Utilities.IoC;
+using Core.Features.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Extensions

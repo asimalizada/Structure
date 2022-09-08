@@ -6,26 +6,26 @@ namespace Core.Business.Concrete
 {
     public class UserManager : IUserService
     {
-        IUserDal _userDal;
+        private readonly IUserRepository _userRepository;
 
-        public UserManager(IUserDal userDal)
+        public UserManager(IUserRepository userRepository)
         {
-            _userDal = userDal;
+            _userRepository = userRepository;
         }
 
         public List<OperationClaim> GetClaims(User user)
         {
-            return _userDal.GetClaims(user);
+            return _userRepository.GetClaims(user);
         }
 
         public void Add(User user)
         {
-            _userDal.Add(user);
+            _userRepository.Add(user);
         }
 
         public User GetByMail(string email)
         {
-            return _userDal.Get(u => u.Email == email);
+            return _userRepository.Get(u => u.Email == email);
         }
     }
 }

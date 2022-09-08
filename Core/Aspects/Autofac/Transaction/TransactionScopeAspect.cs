@@ -1,6 +1,6 @@
 ﻿using System.Transactions;
 using Castle.DynamicProxy;
-using Core.Utilities.Interceptors;
+using Core.Features.Interceptors;
 
 namespace Core.Aspects.Autofac.Transaction
 {

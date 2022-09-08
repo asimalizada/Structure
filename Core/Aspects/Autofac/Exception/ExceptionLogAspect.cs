@@ -1,8 +1,8 @@
 ﻿using Castle.DynamicProxy;
 using Core.CCC.Logging.Log4Net;
 using Core.CCC.Logging;
-using Core.Utilities.Interceptors;
 using Core.Constants;
+using Core.Features.Interceptors;
 
 namespace Core.Aspects.Autofac.Exception
 {

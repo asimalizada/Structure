@@ -1,9 +1,17 @@
 ﻿
 namespace Core.Entities.Concrete
 {
-    public class OperationClaim
+    public class OperationClaim : Entity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
+
+        public OperationClaim()
+        {
+        }
+
+        public OperationClaim(int id, string name) : base(id)
+        {
+            Name = name;
+        }
     }
 }

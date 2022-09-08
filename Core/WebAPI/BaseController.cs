@@ -1,6 +1,6 @@
 ﻿using Core.Business.Abstract;
 using Core.Entities.Abstract;
-using Core.Utilities.Results.Abstract;
+using Core.Features.Results.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Core.WebAPI
